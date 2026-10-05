@@ -59,4 +59,8 @@ public class PetService {
     private static NotFoundException notFound(long id) {
         return new NotFoundException("Pet " + id + " not found");
     }
+
+    public List<PetDTO> findAll() {
+        return List.copyOf(pets.values());
+    }
 }
