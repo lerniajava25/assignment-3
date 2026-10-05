@@ -12,7 +12,7 @@ import jakarta.validation.constraints.*;
  * @param hungerLevel hunger mellan {@value #MIN_LEVEL} och {@value #MAX_LEVEL}, där lägre betyder mer hungrig
  * @param happiness   glädje mellan {@value #MIN_LEVEL} och {@value #MAX_LEVEL}, där högre betyder mer glad
  */
-public record PetDTO(int id,
+public record PetDTO(long id,
 
                      @NotBlank(message = "name cannot be blank")
                      @Size(max = PetDTO.MAX_TEXT_LENGTH, message = "name cannot exceed " + PetDTO.MAX_TEXT_LENGTH + " characters.")
