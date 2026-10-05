@@ -5,6 +5,8 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import uppgift3.dto.PetDTO;
+import uppgift3.service.PetService;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class PetController{
 
     @POST
     public Response adoptPet(@Valid PetDTO pet) {
-        PetDTO adoptedPet = petService.adopt(pet);
+        PetDTO adoptedPet = petService.create(pet);
 
         return Response.status(Response.Status.CREATED)
                 .entity(adoptedPet)
@@ -27,7 +29,7 @@ public class PetController{
 
     @GET
     public Response listAllPets() {
-        List<PetDTO> pets = petService.listAllPets();
+        List<PetDTO> pets = petService.findAll();
 
         return Response.status(Response.Status.OK)
                 .entity(pets)
@@ -36,8 +38,8 @@ public class PetController{
 
     @GET
     @Path("/{id}")
-    public Response viewPetStatus(@PathParam("id") int id) {
-        var pet = petService.petStatus(id);
+    public Response viewPetStatus(@PathParam("id") long id) {
+        var pet = petService.findById(id);
 
         return Response.status(Response.Status.OK)
                 .entity(pet)
@@ -46,8 +48,8 @@ public class PetController{
 
     @PUT
     @Path("/{id}/feed")
-    public Response feedThePet(@PathParam("id") int id) {
-        var reduceHunger = petService.feedPet(id);
+    public Response feedThePet(@PathParam("id") long id) {
+        var reduceHunger = petService.feed(id);
 
         return Response.status(Response.Status.OK)
                 .entity(reduceHunger)
@@ -56,8 +58,8 @@ public class PetController{
 
     @PUT
     @Path("/{id}/play")
-    public Response playWithThePet(@PathParam("id") int id) {
-        var increaseHappiness = petService.playWithThePet(id);
+    public Response playWithThePet(@PathParam("id") long id) {
+        var increaseHappiness = petService.play(id);
 
         return Response.status(Response.Status.OK)
                 .entity(increaseHappiness)
@@ -66,11 +68,10 @@ public class PetController{
 
     @DELETE
     @Path("/{id}")
-    public Response releaseThePet(@PathParam("id") int id) {
-        var releaseThePet = petService.releaseThePet(id);
+    public Response releaseThePet(@PathParam("id") long id) {
+        petService.delete(id);
 
-        return Response.status(Response.Status.OK)
-                .entity(releaseThePet)
+        return Response.noContent()
                 .build();
     }
 }
