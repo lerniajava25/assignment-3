@@ -34,7 +34,7 @@ public class PetService {
     }
 
     public PetDTO feed(long id) {
-        return update(id, p -> p.withHungerLevel(clamp(p.hungerLevel() - FEED_POINTS)));
+        return update(id, p -> p.withHungerLevel(clamp(p.hungerLevel() + FEED_POINTS)));
     }
 
     public PetDTO play(long id) {
