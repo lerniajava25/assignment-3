@@ -28,8 +28,13 @@ public class PetController{
     }
 
     @GET
-    public Response listAllPets() {
-        List<PetDTO> pets = petService.findAll();
+    public Response listAllPets(
+            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("limit") @DefaultValue("10") int limit,
+            @QueryParam("species") String species,
+            @QueryParam("sortBy") @DefaultValue("id") String sortBy,
+            @QueryParam("order") @DefaultValue("asc") String order) {
+        List<PetDTO> pets = petService.findAll(offset, limit, species, sortBy, order);
 
         return Response.status(Response.Status.OK)
                 .entity(pets)

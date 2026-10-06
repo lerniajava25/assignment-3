@@ -60,7 +60,31 @@ public class PetService {
         return new NotFoundException("Pet " + id + " not found");
     }
 
-    public List<PetDTO> findAll() {
-        return List.copyOf(pets.values());
+    public List<PetDTO> findAll(int offset, int limit, String species, String sortBy, String order) {
+        if (offset < 0 || limit < 1) {
+            throw new jakarta.ws.rs.BadRequestException();
+        }
+
+        Comparator<PetDTO> comparator = switch (sortBy) {
+            case "id" -> Comparator.comparingLong(PetDTO::id);
+            case "name" -> Comparator.comparing(PetDTO::name, String.CASE_INSENSITIVE_ORDER);
+            case "species" -> Comparator.comparing(PetDTO::species, String.CASE_INSENSITIVE_ORDER);
+            case "hungerLevel" -> Comparator.comparingInt(PetDTO::hungerLevel);
+            case "happiness" -> Comparator.comparingInt(PetDTO::happiness);
+            default -> throw new jakarta.ws.rs.BadRequestException();
+        };
+
+        if ("desc".equalsIgnoreCase(order)) {
+            comparator = comparator.reversed();
+        } else if (!"asc".equalsIgnoreCase(order)) {
+            throw new jakarta.ws.rs.BadRequestException();
+        }
+
+        return pets.values().stream()
+                .filter(pet -> species == null || pet.species().equalsIgnoreCase(species))
+                .sorted(comparator.thenComparingLong(PetDTO::id))
+                .skip(offset)
+                .limit(limit)
+                .toList();
     }
 }
