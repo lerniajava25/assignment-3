@@ -34,7 +34,7 @@ public class PetService {
     }
 
     public PetDTO feed(long id) {
-        return update(id, p -> p.withHungerLevel(clamp(p.hungerLevel() + FEED_POINTS)));
+        return update(id, p -> p.withHungerLevel(clamp(p.hungerLevel() - FEED_POINTS)));
     }
 
     public PetDTO play(long id) {
@@ -43,6 +43,13 @@ public class PetService {
 
     public void delete(long id) {
         if (pets.remove(id) == null) throw notFound(id);
+    }
+
+    // "Pet" sorteras efter id
+    public List<PetDTO> findAll() {
+        return pets.values().stream()
+                .sorted(Comparator.comparingLong(PetDTO::id))
+                .toList();
     }
 
     // ConcurrentHashMap.computeIfPresent gör läs-ändra-skriv atomiskt för 1 "pet"
@@ -58,9 +65,5 @@ public class PetService {
 
     private static NotFoundException notFound(long id) {
         return new NotFoundException("Pet " + id + " not found");
-    }
-
-    public List<PetDTO> findAll() {
-        return List.copyOf(pets.values());
     }
 }
