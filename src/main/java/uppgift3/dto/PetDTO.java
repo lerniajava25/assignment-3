@@ -9,7 +9,7 @@ import jakarta.validation.constraints.*;
  * @param id          unikt id. Sätts av servern och ignoreras vid inkommande data
  * @param name        djurets namn. Får inte vara tomt, och max {@value #MAX_TEXT_LENGTH} tecken
  * @param species     art, exempelvis "hund"/eng. "dog". Får inte vara tom, och max {@value #MAX_TEXT_LENGTH}
- * @param hungerLevel hunger mellan {@value #MIN_LEVEL} och {@value #MAX_LEVEL}, där lägre betyder mer hungrig
+ * @param hungerLevel hunger mellan {@value #MIN_LEVEL} och {@value #MAX_LEVEL}, där högre betyder mer hungrig
  * @param happiness   glädje mellan {@value #MIN_LEVEL} och {@value #MAX_LEVEL}, där högre betyder mer glad
  */
 public record PetDTO(long id,
