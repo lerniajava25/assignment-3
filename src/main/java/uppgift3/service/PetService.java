@@ -45,13 +45,6 @@ public class PetService {
         if (pets.remove(id) == null) throw notFound(id);
     }
 
-    // "Pet" sorteras efter id
-    public List<PetDTO> findAll() {
-        return pets.values().stream()
-                .sorted(Comparator.comparingLong(PetDTO::id))
-                .toList();
-    }
-
     // ConcurrentHashMap.computeIfPresent gör läs-ändra-skriv atomiskt för 1 "pet"
     private PetDTO update(long id, UnaryOperator<PetDTO> change) {
         PetDTO updated = pets.computeIfPresent(id, (key, current) -> change.apply(current));
@@ -65,5 +58,33 @@ public class PetService {
 
     private static NotFoundException notFound(long id) {
         return new NotFoundException("Pet " + id + " not found");
+    }
+
+    public List<PetDTO> findAll(int offset, int limit, String species, String sortBy, String order) {
+        if (offset < 0 || limit < 1) {
+            throw new jakarta.ws.rs.BadRequestException();
+        }
+
+        Comparator<PetDTO> comparator = switch (sortBy) {
+            case "id" -> Comparator.comparingLong(PetDTO::id);
+            case "name" -> Comparator.comparing(PetDTO::name, String.CASE_INSENSITIVE_ORDER);
+            case "species" -> Comparator.comparing(PetDTO::species, String.CASE_INSENSITIVE_ORDER);
+            case "hungerLevel" -> Comparator.comparingInt(PetDTO::hungerLevel);
+            case "happiness" -> Comparator.comparingInt(PetDTO::happiness);
+            default -> throw new jakarta.ws.rs.BadRequestException();
+        };
+
+        if ("desc".equalsIgnoreCase(order)) {
+            comparator = comparator.reversed();
+        } else if (!"asc".equalsIgnoreCase(order)) {
+            throw new jakarta.ws.rs.BadRequestException();
+        }
+
+        return pets.values().stream()
+                .filter(pet -> species == null || pet.species().equalsIgnoreCase(species))
+                .sorted(comparator.thenComparingLong(PetDTO::id))
+                .skip(offset)
+                .limit(limit)
+                .toList();
     }
 }
