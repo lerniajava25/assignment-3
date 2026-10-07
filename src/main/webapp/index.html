@@ -15,6 +15,50 @@
 <button type="button" class="btn-primary" id="open-adopt">Adopt a pet</button>
 
 <!-- Overlay with filer options -->
+<dialog id="find-pet" class="find-pet" aria-labelledby="find-title">
+    <header class="find-pet__top">
+        <button type="button" class="find-pet__back" id="find-back" aria-label="Back">
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+                <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+
+        <h2 id="find-title">Find pet</h2>
+
+        <label class="find-pet__search">
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+                <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <circle cx="11" cy="11" r="7"/>
+                    <path d="M20 20l-4-4"/>
+                </g>
+            </svg>
+            <input type="search" id="find-search" placeholder="Enter pet name or species"
+                   aria-label="Search pets by name or species" autocomplete="off" autofocus>
+        </label>
+    </header>
+
+    <div class="find-pet__table-wrap">
+        <table class="find-pet__table">
+            <thead>
+            <tr>
+                <th scope="col" data-key="id" aria-sort="ascending"><button type="button" class="sort">ID</button></th>
+                <th scope="col" data-key="name" aria-sort="none"><button type="button" class="sort">Name</button></th>
+                <th scope="col" data-key="species" aria-sort="none"><button type="button" class="sort">Species</button></th>
+                <th scope="col" data-key="hungerLevel" aria-sort="none"><button type="button" class="sort">Hunger Level</button></th>
+                <th scope="col" data-key="happiness" aria-sort="none"><button type="button" class="sort">Happiness</button></th>
+            </tr>
+            </thead>
+            <tbody id="find-rows"></tbody>
+        </table>
+    </div>
+
+    <footer class="find-pet__pager">
+        <button type="button" id="find-prev" aria-label="Previous page">&lt;</button>
+        <span id="find-page" aria-live="polite">1/1</span>
+        <button type="button" id="find-next" aria-label="Next page">&gt;</button>
+    </footer>
+</dialog>
 
 <!-- "Spelkonsol" med djuret -->
 
