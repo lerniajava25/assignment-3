@@ -1,0 +1,102 @@
+/* Typsnitt lagras lokal så de fungerar utan internet */
+@font-face {
+    font-family: "Kosugi Maru";
+    src: url("../fonts/KosugiMaru-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Roboto Mono";
+    src: url("../fonts/RobotoMono-VariableFont_wght.ttf") format("truetype");
+    font-weight: 100 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    /* Färger */
+    --pink: #F9AFAF;
+    --coral: #FF7979;
+    --yellow: #F9C74F;
+    --ink: #121113;
+    --light: #EEEFF8;
+    --white: #FFFFFF;
+
+    /* Variabler för användningen av färgerna */
+    --bg: var(--pink);
+    --btn: var(--yellow);
+    --btn-shadow: var(--coral);
+
+    /* Backup-typsnitt ifall att dom vanliga inte hittas */
+    --font-title: "Kosugi Maru", ui-rounded, system-ui, sans-serif;
+    --font-ui: "Roboto Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    --depth: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { height: 100%; }
+
+body {
+    min-height: 100dvh;
+    margin: 0;
+    padding: max(2rem, env(safe-area-inset-top)) 2rem max(2rem, env(safe-area-inset-bottom));
+
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: clamp(3rem, 12vh, 7rem);
+
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-ui), serif;
+}
+
+h1 {
+    margin: 0;
+    font-family: var(--font-title), sans-serif;
+    font-size: clamp(3rem, 9vw, 4.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    translate: 0 -3rem;
+}
+
+/* Primärknapp */
+.btn-primary {
+    display: inline-block;
+    padding: 1.25rem 2.5rem;
+    background: var(--btn);
+    color: var(--ink);
+    font: 500 1rem/1 var(--font-ui);
+    text-decoration: none;
+    border: 2px solid var(--ink);
+    border-radius: 1rem;
+    cursor: pointer;
+
+    /* "Skuggade" delen av knappen */
+    box-shadow:
+            0 var(--depth) 0 0 var(--btn-shadow),
+            0 var(--depth) 0 2px var(--ink);
+    transition: transform 0.08s, box-shadow 0.08s;
+}
+
+.btn-primary:hover { transform: translateY(-2px); }
+
+.btn-primary:active {
+    transform: translateY(calc(var(--depth) - 2px));
+    box-shadow:
+            0 2px 0 0 var(--btn-shadow),
+            0 2px 0 2px var(--ink);
+}
+
+.btn-primary:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-primary { transition: none; }
+}
