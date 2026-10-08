@@ -23,6 +23,7 @@
 </section>
 
 <!-- Overlay with filer options -->
+
 <dialog id="find-pet" class="find-pet" aria-labelledby="find-title">
     <header class="find-pet__top">
         <button type="button" class="find-pet__back" id="find-back" aria-label="Back">
@@ -69,6 +70,45 @@
 </dialog>
 
 <!-- "Spelkonsol" med djuret -->
+<section id="game" class="game" hidden>
+    <div class="tama">
+        <div class="console">
+            <h2 class="console__title">MyPet</h2>
+
+            <div class="screen" id="screen">
+                <p class="screen__name" id="pet-name"></p>
+                <button type="button" class="screen__back" id="game-back" data-sprite="back"
+                        aria-label="Back to start"></button>
+
+                <div class="pet" id="pet" role="img" aria-label="Your pet"></div>
+
+                <!-- Tryck eller dra till djuret -->
+                <button type="button" class="item item--feed" data-action="feed" data-sprite="apple"
+                        aria-label="Feed"></button>
+
+                <button type="button" class="item item--play" data-action="play" data-sprite="ball"
+                        aria-label="Play"></button>
+            </div>
+
+            <div class="controls">
+                <button type="button" class="knob" id="btn-feed"><i></i>Feed</button>
+                <button type="button" class="knob knob--mid" id="btn-play"><i></i>Play</button>
+                <button type="button" class="knob" id="btn-release"><i></i>Release</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<dialog id="release-dialog" class="confirm" aria-labelledby="release-title">
+    <h2 id="release-title">Release <span id="release-name"></span>?</h2>
+    <p>This can't be undone.</p>
+    <div class="confirm__actions">
+        <button type="button" id="release-cancel" class="confirm__cancel">Cancel</button>
+        <button type="button" id="release-confirm" class="btn-primary">Release</button>
+    </div>
+</dialog>
+
+<p id="toast" class="toast" role="status" hidden></p>
 
 <script src="js/main.js"></script>
 <script src="js/game.js"></script>
