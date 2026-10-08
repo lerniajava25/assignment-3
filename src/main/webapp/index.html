@@ -7,12 +7,20 @@
     <link rel="preload" href="fonts/KosugiMaru-Regular.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="preload" href="fonts/RobotoMono-Variable.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/find-pet.css">
+    <link rel="stylesheet" href="css/game.css">
+
 </head>
 <body>
 
 <!-- Startsidan -->
-<h1>MyPet</h1>
-<button type="button" class="btn-primary" id="open-adopt">Adopt a pet</button>
+<section id="start">
+    <h1>MyPet</h1>
+    <div class="start__actions">
+        <button type="button" class="btn-primary" id="open-game">Continue</button>
+        <button type="button" class="btn-secondary" id="open-adopt">Adopt a pet</button>
+    </div>
+</section>
 
 <!-- Overlay with filer options -->
 <dialog id="find-pet" class="find-pet" aria-labelledby="find-title">
@@ -62,6 +70,9 @@
 
 <!-- "Spelkonsol" med djuret -->
 
-<script src="js/app.js"></script>
+<script src="js/main.js"></script>
+<script src="js/game.js"></script>
+<script src="js/find-pet.js"></script>
+
 </body>
 </html>
