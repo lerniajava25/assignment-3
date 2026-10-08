@@ -144,6 +144,7 @@
     let demo = false;                // true = demo-djuret, inga serveranrop
     let busy = false;
     let toastTimer;
+    let selection = 0;               // ökar varje gång ett djur väljs eller lämnas, så sena svar kan ignoreras
 
     document.querySelectorAll('[data-sprite]').forEach(el => { el.innerHTML = sprite(el.dataset.sprite); });
 
@@ -152,6 +153,7 @@
     document.getElementById('game-back').addEventListener('click', leave);
 
     function show(p, isDemo = false) {
+        selection++;
         pet = p;
         demo = isDemo;
         startEl.hidden = true;
@@ -165,6 +167,7 @@
     document.getElementById('open-game').addEventListener('click', () => show({ ...DEMO_PET }, true));
 
     function leave() {
+        selection++;
         pet = null;
         msgEl.hidden = true;
         gameEl.hidden = true;
@@ -214,18 +217,23 @@
         }
 
         busy = true;
+        const token = selection;                   // vilket djur anropet gäller
         try {
             if (demo) {
                 pet = changeLevel(pet, action);        // demo: räkna lokalt
             } else {
                 const res = await fetch(`${API}/${pet.id}/${action}`, { method: 'PUT' });
+                if (token !== selection) return;       // man har lämnat djuret under tiden
                 if (!res.ok) throw await toError(res);
-                pet = await res.json();                // servern svarar med det uppdaterade djuret
+                const updated = await res.json();      // servern svarar med det uppdaterade djuret
+                if (token !== selection) return;
+                pet = updated;
             }
             render();
             react(action === 'feed' ? 'is-eating' : 'is-happy');
             particle(action === 'feed' ? 'apple' : 'heart');
         } catch (err) {
+            if (token !== selection) return;
             react('is-no');
             if (err.status === 404) { toast('That pet no longer exists.'); leave(); }
             else toast(err.message);
@@ -272,15 +280,18 @@
 
     document.getElementById('release-confirm').addEventListener('click', async () => {
         const { id, name } = pet;
+        const token = selection;
         releaseDialog.close();
         try {
             if (!demo) {
                 const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
                 if (!res.ok && res.status !== 404) throw await toError(res);   // 204 = släppt, 404 = fanns redan inte
             }
+            if (token !== selection) return;         // man har redan lämnat eller bytt djur
             toast(`${name} was released.`);
             leave();
         } catch (err) {
+            if (token !== selection) return;
             toast(err.message);
         }
     });

@@ -122,6 +122,8 @@
 .item:active { transform: scale(0.92); }
 .item.ghost {                  /* kopian som följer pekaren */
     position: fixed;
+    right: auto;                 /* nollställer .item--play och .item, annars sträcks kopian ut */
+    bottom: auto;
     z-index: 1000;
     padding: 0;
     pointer-events: none;
