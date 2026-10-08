@@ -36,6 +36,36 @@
     border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;   /* ägg: smalare upptill */
 }
 
+/* Nyckelring: sitter bakom äggets överkant, med samma gula fyllning och svarta linje som ägget.
+   ::after täcker äggets linje där ringen sitter, så att de två smälter ihop utan skarv. */
+.console::before {
+    content: "";
+    position: absolute;
+    z-index: -1;                 /* bakom ägget, så bara övre delen av ringen syns */
+    top: -12cqw;
+    left: 50%;
+    translate: -50% 0;
+    width: 15cqw;
+    aspect-ratio: 1;
+    border: var(--line) solid var(--ink);
+    border-radius: 50%;
+    /* Hålet: bakgrundsfärg, svart kant och sedan gult runt om */
+    background: radial-gradient(circle,
+    var(--bg) 2.2cqw,
+    var(--ink) 2.2cqw calc(2.2cqw + var(--line)),
+    var(--yellow) calc(2.2cqw + var(--line)));
+}
+.console::after {
+    content: "";
+    position: absolute;
+    top: calc(var(--line) * -1);   /* precis över äggets linje */
+    left: 50%;
+    translate: -50% 0;
+    width: calc(12cqw - 2 * var(--line));   /* ringens insida, så ringens sidolinjer går ner i ägget */
+    height: calc(var(--line) + 3px);
+    background: var(--yellow);
+}
+
 .console__title {
     margin: 15cqw 0 0;
     font: 400 9.5cqw/1 var(--font-title);
@@ -165,7 +195,7 @@
 .knob {
     display: grid;
     justify-items: center;
-    gap: 1cqw;
+    gap: 2.2cqw;                 /* avstånd mellan knappen och texten (skuggan tar ca 1cqw av det) */
     width: 14cqw;
     padding: 0;
     border: 0;
