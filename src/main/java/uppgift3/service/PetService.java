@@ -1,5 +1,6 @@
 package uppgift3.service;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.NotFoundException;
 import uppgift3.dto.PetDTO;
@@ -13,6 +14,13 @@ import java.util.function.UnaryOperator;
 @ApplicationScoped
 public class PetService {
 
+    // Färdiga pets för demo
+    @PostConstruct
+    void seed() {
+        create(new PetDTO(0, "Billy", "Dog", 80, 80));
+        create(new PetDTO(0, "Katten Jansson", "Cat", 40, 60));
+        create(new PetDTO(0, "Luke Skyhopper", "Rabbit", 20, 90));
+    }
     private static final int FEED_POINTS = 20;
     private static final int PLAY_POINTS = 20;
 
